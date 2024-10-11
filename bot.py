@@ -1,5 +1,5 @@
 import telebot
-from telebot import types
+# from telebot import types
 import var
 from var import token
 import logging
@@ -13,7 +13,7 @@ bot = telebot.TeleBot(f'{token}')
 @bot.message_handler(commands=['start'])
 def handle_start(message):
   # Создание клавиатуры
-  keyboard = types.ReplyKeyboardMarkup(row_width=1)
+  keyboard = types.ReplyKeyboardMarkup(row_width=2)
   button1 = types.KeyboardButton('Получить IP')
   button2 = types.KeyboardButton('Soon')
   keyboard.add(button1, button2)
@@ -26,7 +26,7 @@ def handle_message(message):
   
   # Ответ на текстовое сообщение
   if message.text == 'Получить IP':
-      bot.send_message(message.chat.id, f'Ваш ip адрес: {}')
+      bot.send_message(message.chat.id, f'Ваш ip адрес: {get_ip.ip}')
   
   # Ответ на изображение
   if message.photo:

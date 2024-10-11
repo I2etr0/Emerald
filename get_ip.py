@@ -1,4 +1,5 @@
-import os
+import requests
 
-ip = os.system('curl 2ip.ru').split()
+ip = requests.get('https://internet-lab.ru/ip').text
+
 print(ip)
