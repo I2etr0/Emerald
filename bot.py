@@ -1,33 +1,32 @@
 import telebot
-# from telebot import types
-import var
-from var import token
-import logging
+from telebot import types
+import file
+from file import stoken
+#import get_ip
+from termcolor import colored
 
-import get_ip
-
-token = var.token
+token = file.stoken
 
 bot = telebot.TeleBot(f'{token}')
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
   # Создание клавиатуры
-  keyboard = types.ReplyKeyboardMarkup(row_width=2)
-  button1 = types.KeyboardButton('Получить IP')
+  keyboard = types.ReplyKeyboardMarkup(row_width=1)
+  #button1 = types.KeyboardButton('Получить IP')
   button2 = types.KeyboardButton('Soon')
-  keyboard.add(button1, button2)
+  keyboard.add(button2)
 
   # Отправка сообщения с клавиатурой
-  bot.reply_to(message, 'Привет! Я бот.', reply_markup=keyboard)
+  bot.reply_to(message, 'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?', reply_markup=keyboard)
 
 @bot.message_handler(content_types=['text', 'photo', 'sticker'])
 def handle_message(message):
   
   # Ответ на текстовое сообщение
-  if message.text == 'Получить IP':
-      bot.send_message(message.chat.id, f'Ваш ip адрес: {get_ip.ip}')
-  
+  if message.text == 'Soon':
+      bot.send_message(message.chat.id, f'{message.text} это секретная разработка!\nО ней пока никто не знает! Даже разработчики!')
+   
   # Ответ на изображение
   if message.photo:
       bot.send_message(message.chat.id, 'Вы отправили изображение.')

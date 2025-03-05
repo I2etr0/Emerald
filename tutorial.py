@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-from var import token
+from python.Emerald.file import token
 
 bot = telebot.TeleBot(f'{token}')
 
