@@ -1,8 +1,8 @@
 import telebot
 from telebot import types
 import file
-from file import stoken
-#import get_ip
+from file import stoken 
+import termcolor
 from termcolor import colored
 
 token = file.stoken
