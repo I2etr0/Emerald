@@ -1,5 +1,6 @@
 import telebot
 from telebot import types
+
 import file
 from file import stoken 
 import termcolor
@@ -9,6 +10,10 @@ token = file.stoken
 
 bot = telebot.TeleBot(f'{token}')
 
+#TODO: Настроить логирование (EMERALD-6)
+
+
+
 @bot.message_handler(commands=['start'])
 def handle_start(message):
   # Создание клавиатуры
@@ -17,8 +22,10 @@ def handle_start(message):
   button2 = types.KeyboardButton('Soon')
   keyboard.add(button2)
 
+
   # Отправка сообщения с клавиатурой
   bot.reply_to(message, 'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?', reply_markup=keyboard)
+
 
 @bot.message_handler(content_types=['text', 'photo', 'sticker'])
 def handle_message(message):
