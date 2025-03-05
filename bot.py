@@ -1,13 +1,12 @@
 import telebot
 from telebot import types
-
 import file
 from file import stoken 
 import termcolor
 from termcolor import colored
 
-token = file.stoken
 
+token = file.stoken
 bot = telebot.TeleBot(f'{token}')
 
 #TODO: Настроить логирование (EMERALD-6)
@@ -33,6 +32,9 @@ def handle_message(message):
   # Ответ на текстовое сообщение
   if message.text == 'Soon':
       bot.send_message(message.chat.id, f'{message.text} это секретная разработка!\nО ней пока никто не знает! Даже разработчики!')
+  else:
+      bot.send_message(message.chat.id, 'Я не очень Вас понимаю, но обязательно передам Ваше сообщение разработчикам!')
+       
    
   # Ответ на изображение
   if message.photo:
