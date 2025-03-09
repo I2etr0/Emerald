@@ -1,0 +1,26 @@
+# version: '3.8'
+services:
+### Emerald Container
+  emerald:
+    image: emerald:v1.5
+    # dockerfile: bot/Dockerfile
+    container_name: emerald_brain
+    links:
+      - "mysql_emerald"
+    ports:
+      - "442:22"
+
+### MySQL Container
+  mysql_emerald:
+    # image: mysql:latest
+    # dockerfile: database/Dockerfile
+    container_name: mysql_emerald
+    build:
+      args:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USDER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+      - "442:22"
