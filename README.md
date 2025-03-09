@@ -28,8 +28,8 @@
 
 1. Склонируйте репозиторий:
 ```bash
-git clone https://github.com/your-repo-url.git
-cd your-repo-folder
+git clone https://github.com/I2etr0/Emerald.git
+cd Emerald
 ```
 2. Создайте новую ветку для вашей задачи:
 ```bash
@@ -38,7 +38,7 @@ git checkout -b feat-your-feature-name
 3. Внесите изменения и отправьте их в удаленный репозиторий:
 ```bash
 git add .
-git commit -m "feat: описание вашего изменения"
+git commit -m "<test|new|feature|question|bug>-<add new tool|bug fix>"
 git push origin feat-your-feature-name
 ```
-4. Создайте Pull Request в главную ветку.
+4. Создайте Pull Request в тестовую ветку.
