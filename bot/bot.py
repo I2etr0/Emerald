@@ -15,7 +15,29 @@ def handle_start(message):
   keyboard.row(button1, button2)
 
   # Отправка сообщения с клавиатурой
-  bot.reply_to(message, 'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?', reply_markup=keyboard)
+  bot.send_message(message.chat.id, 'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?', reply_markup=keyboard)
+
+# Обработчик команды /id
+@bot.message_handler(commands=['id'])
+def handle_id(message):
+  bot.send_message(
+      message.chat.id,
+      f'<b> <code>{message.from_user.id}</code> </b> - это Ваш ID, но учтите, что его надо держать в секрете!!!',
+      parse_mode='HTML'
+  )
+
+# Обработчик команды /help
+@bot.message_handler(commands=['help'])
+def handle_id(message):
+  bot.send_message(
+      message.chat.id,
+      'Привет! Ты вызвал эту подсказку. Вот что может этот бот:\n'
+      '/start - запустить бота\n'
+      '/help - вызвать эту подсказку\n'
+      '/id - вывести в чат твой ID аккаунта.',
+      parse_mode='HTML'
+  )
+
 
 @bot.message_handler(content_types=['text', 'photo', 'sticker'])
 def handle_message(message):
@@ -29,7 +51,10 @@ def handle_message(message):
 
 
   elif message.text == 'Получить ID':
-    bot.send_message(message.chat.id, f'<b>{message.from_user.id}</b> - это Ваш ID, но учтите, что его надо держать в секрете!!!', parse_mode='HTML')
+    bot.send_message(
+        message.chat.id,
+        f'<b> <code>{message.from_user.id}</code> </b> - это Ваш ID, но учтите, что его надо держать в секрете!!!',
+        parse_mode='HTML')
   
   elif message.text == 'Ты тут?' or message.text == 'Ты здесь?':
     bot.send_message(message.chat.id, 'Да, Милорд, я здесь. Чем могу помочь?')
