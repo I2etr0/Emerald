@@ -1,58 +1,68 @@
 import telebot
 from telebot import types
-from file import stoken 
-
+from file import stoken  # Предполагается, что stoken содержит токен бота
 
 token = stoken
 bot = telebot.TeleBot(f'{token}')
 
+# Обработчик команды /start
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-  # Создание кнопок первого уровня
-  keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-  button1 = types.KeyboardButton('Получить ID')
-  button2 = types.KeyboardButton('Перейти к ИИ')
-  keyboard.row(button1, button2)
-
-  # Отправка сообщения с клавиатурой
-  bot.reply_to(message, 'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?', reply_markup=keyboard)
-
-@bot.message_handler(content_types=['text', 'photo', 'sticker'])
-def handle_message(message):
-  # Добавление кнопок второго уровня. Они будут под сообщением
-  if message.text == 'Перейти к ИИ':
-    keyboard = types.InlineKeyboardMarkup(row_width=1) # Обрати внимение, что тут тип кнопки InlineKeyboardMarkup, а в первой итерации кнопок ReplyKeyboardMarkup и KeyboardButton!
-    button1 = types.InlineKeyboardButton('Qwen', url='https://chat.qwen.ai/')
-    button2 = types.InlineKeyboardButton('DeepSeek', url='https://chat.deepseek.com/')
+    # Создание кнопок первого уровня
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    button1 = types.InlineKeyboardButton('Получить ID', callback_data='get_id')
+    button2 = types.InlineKeyboardButton('Перейти к ИИ', callback_data='get_ii')
     keyboard.row(button1, button2)
-    bot.send_message(message.chat.id, f'Какой бот Вам интересен?', reply_markup=keyboard)
 
+    # Отправка сообщения с клавиатурой
+    bot.send_message(
+        message.chat.id,
+        'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?',
+        reply_markup=keyboard
+    )
 
-  elif message.text == 'Получить ID':
-    bot.send_message(message.chat.id, f'<b>{message.from_user.id}</b> - это Ваш ID, но учтите, что его надо держать в секрете!!!', parse_mode='HTML')
-  
-  elif message.text == 'Ты тут?' or message.text == 'Ты здесь?':
-    bot.send_message(message.chat.id, 'Да, Милорд, я здесь. Чем могу помочь?')
+# Обработчик нажатия на inline-кнопки
+@bot.callback_query_handler(func=lambda call: True)
+def handle_callback(call):
+    if call.data == 'get_id':
+        user_id = call.from_user.id
+        bot.send_message(
+            call.message.chat.id,
+            f'<b>{user_id}</b> - это Ваш ID, но учтите, что его надо держать в секрете!!!',
+            parse_mode='HTML'
+        )
 
-  elif message.text == 'ping' or message.text == 'Ping':
-    bot.send_message(message.chat.id, 'Да-да?')
+    elif call.data == 'get_ii':
+        # Создание клавиатуры для выбора ИИ
+        keyboard = types.InlineKeyboardMarkup(row_width=1)
+        button3 = types.InlineKeyboardButton('Qwen', url='https://chat.qwen.ai')
+        button4 = types.InlineKeyboardButton('DeepSeek к ИИ', url='https://chat.deepseek.com')
+        button5 = types.InlineKeyboardButton('Назад', callback_data='back')
+        keyboard.add(button3, button4)
+        keyboard.row(button5)
 
-  elif message.text == 'Как дела?' or message.text == 'как дела?':
-    bot.send_message(message.chat.id, 'Если я Вам могу ответить, значит, сервера работают и у меня все хорошо! \n\nЧем я могу Вам помочь?')
+        # Изменение сообщения с новой клавиатурой
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            text='Выберите нужный ИИ:',
+            reply_markup=keyboard
+        )
 
-  elif message.text == 'Привет!' or message.text == 'привет' or message.text == 'привет!' or message.text == 'Привет' or message.text == 'ghbdtn' or message.text == 'ghbdtn!'  or message.text == 'Ghbdtn!' or message.text == 'Ghbdtn':
-    bot.send_message(message.chat.id, 'Доброго времени суток, Милорд. Чем могу помочь?')
-          
-  # Ответ на изображение
-  elif message.photo:
-      bot.send_message(message.chat.id, 'Вы отправили изображение.')
+    elif call.data == 'back':
+        # Возвращение к начальному меню
+        keyboard = types.InlineKeyboardMarkup(row_width=1)
+        button1 = types.InlineKeyboardButton('Получить ID', callback_data='get_id')
+        button2 = types.InlineKeyboardButton('Перейти к ИИ', callback_data='get_ii')
+        keyboard.row(button1, button2)
 
-  # Ответ на стикер
-  elif message.sticker:
-      bot.send_message(message.chat.id, 'Вы отправили стикер.')
+        # Изменение сообщения с начальной клавиатурой
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            text='Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?',
+            reply_markup=keyboard
+        )
 
-  else:
-    bot.send_message(message.chat.id, 'Я не очень Вас понимаю, но обязательно передам Ваше сообщение разработчикам!')
-
-
-bot.polling()
+# Запуск бота
+bot.polling(non_stop=True)
