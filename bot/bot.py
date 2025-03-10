@@ -28,7 +28,7 @@ def handle_callback(call):
         user_id = call.from_user.id
         bot.send_message(
             call.message.chat.id,
-            f'<b>{user_id}</b> - это Ваш ID, но учтите, что его надо держать в секрете!!!',
+            f'<b> <code>{user_id}</code> </b> - это Ваш ID, но учтите, что его надо держать в секрете!!!',
             parse_mode='HTML'
         )
 
