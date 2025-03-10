@@ -21,6 +21,27 @@ def handle_start(message):
         reply_markup=keyboard
     )
 
+# Обработчик команды /id
+@bot.message_handler(commands=['id'])
+def handle_id(message):
+    bot.send_message(
+        message.chat.id,
+        f'<b> <code>{message.from_user.id}</code> </b> - это Ваш ID, но учтите, что его надо держать в секрете!!!',
+        parse_mode='HTML'
+    )
+
+# Обработчик команды /help
+@bot.message_handler(commands=['help'])
+def handle_id(message):
+    bot.send_message(
+        message.chat.id,
+        'Привет! Ты вызвал эту подсказку. Вот что может этот бот:\n'
+        '/start - запустить бота\n'
+        '/help - вызвать эту подсказку\n'
+        '/id - вывести в чат твой ID аккаунта.',
+        parse_mode='HTML'
+    )
+
 # Обработчик нажатия на inline-кнопки
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
