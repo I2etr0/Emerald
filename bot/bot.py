@@ -1,16 +1,10 @@
 import telebot
 from telebot import types
-import file
 from file import stoken 
-import re
 
 
-token = file.stoken
+token = stoken
 bot = telebot.TeleBot(f'{token}')
-
-#TODO: Настроить логирование (EMERALD-6)
-
-
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -20,10 +14,8 @@ def handle_start(message):
   button2 = types.KeyboardButton('Перейти к ИИ')
   keyboard.row(button1, button2)
 
-
   # Отправка сообщения с клавиатурой
   bot.reply_to(message, 'Привет! Меня зовут Эмеральд. Чем я могу тебе помочь?', reply_markup=keyboard)
-
 
 @bot.message_handler(content_types=['text', 'photo', 'sticker'])
 def handle_message(message):
@@ -50,18 +42,17 @@ def handle_message(message):
 
   elif message.text == 'Привет!' or message.text == 'привет' or message.text == 'привет!' or message.text == 'Привет' or message.text == 'ghbdtn' or message.text == 'ghbdtn!'  or message.text == 'Ghbdtn!' or message.text == 'Ghbdtn':
     bot.send_message(message.chat.id, 'Доброго времени суток, Милорд. Чем могу помочь?')
+          
+  # Ответ на изображение
+  elif message.photo:
+      bot.send_message(message.chat.id, 'Вы отправили изображение.')
+
+  # Ответ на стикер
+  elif message.sticker:
+      bot.send_message(message.chat.id, 'Вы отправили стикер.')
 
   else:
     bot.send_message(message.chat.id, 'Я не очень Вас понимаю, но обязательно передам Ваше сообщение разработчикам!')
 
-        
-    
-  # Ответ на изображение
-  if message.photo:
-      bot.send_message(message.chat.id, 'Вы отправили изображение.')
-
-  # Ответ на стикер
-  if message.sticker:
-      bot.send_message(message.chat.id, 'Вы отправили стикер.')
 
 bot.polling()
