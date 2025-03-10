@@ -163,3 +163,5 @@ cython_debug/
 file.py
 .vscode
 tutorial.py
+requirements.txt
+Dockerfile
